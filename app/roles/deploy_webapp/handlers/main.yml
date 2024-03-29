@@ -1,0 +1,11 @@
+---
+# handlers file for deploy_webapp
+- name: Restart Docker Service
+  service:
+     name: docker
+     state: restarted
+
+- name: Reload Container
+  command: docker-compose restart
+  args:
+    chdir: /opt/docker_app

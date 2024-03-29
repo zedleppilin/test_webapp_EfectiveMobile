@@ -1,0 +1,46 @@
+---
+# tasks file for deploy_webapp
+- name: Install Docker and Docker Compose
+  apt:
+        name:
+          - docker.io
+          - docker-compose
+        state: present
+- name: Create directories for Nginx and PHP
+  file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+  loop:
+        - /opt/docker_app/nginx
+        - /opt/docker_app/php
+
+- name: Generate NGINX configuration
+  template:
+        src: nginx.conf.j2
+        dest: /opt/docker_app/nginx/nginx.conf
+        mode: '0755'
+  notify:
+        - Restart Docker Service
+        - Reload Container
+ 
+- name: Copy compose   files
+  copy:
+     src: "docker-compose.yaml"
+     dest: "/opt/docker_app"
+     
+- name: Copy Dockerfile
+  copy:
+    src: "Dockerfile"
+    dest: "/opt/docker_app/php"
+
+- name: Copy index.php
+  copy:
+    src: "index.php"
+    dest: "/opt/docker_app/php"
+        
+
+- name: Build and run docker-compose
+  command: docker-compose up -d
+  args:
+        chdir: /opt/docker_app

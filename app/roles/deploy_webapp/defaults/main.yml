@@ -1,0 +1,7 @@
+---
+# defaults file for deploy_webapp
+    nginx_listen_port: 80
+    nginx_server_name: localhost
+    nginx_root: /var/www/html
+    nginx_index: index.php index.html
+    php_fastcgi_pass: php:9000
