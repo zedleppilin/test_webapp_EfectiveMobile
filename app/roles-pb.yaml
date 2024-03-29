@@ -1,6 +1,6 @@
 ---
 - name: Deploy Dockerized PHP application with Nginx and MySQL
-  hosts: officepc
+  hosts: #### 
   become: yes
   gather_facts: no
   
